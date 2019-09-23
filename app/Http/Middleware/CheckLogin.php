@@ -15,10 +15,11 @@ class CheckLogin
      */
     public function handle($request, Closure $next)
     {   
-        $res=session('user');
+        // $res=session('user');
+        $res=session('id');
         // dd($res);
         if (!$res) {
-            return redirect('cargo/login');
+            return redirect('weektest/login');
         }
 
         return $next($request);

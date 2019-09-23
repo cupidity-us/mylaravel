@@ -238,21 +238,92 @@ Route::prefix('cargo')->middleware('checklogin')->group(function(){
 
 });
 
-Route::prefix('wechat')->group(function () {
+///////////////////////////////////////////////////////////////////
+///微信
+///////////////////////////////////////////////////////////////////
+
+Route::prefix('wechat')->namespace('wechat')->group(function () {
 	Route::get('get_access_token','WechatController@get_access_token');
 	Route::get('get_wechat_access_token','WechatController@get_wechat_access_token');
 	Route::get('get_user_index','WechatController@get_user_index');
 
 });
 
-Route::prefix('welogin')->group(function () {
+Route::prefix('welogin')->namespace('wechat')->group(function () {
 	Route::get('login','WeloginController@login');
 	Route::any('welogin_login','WeloginController@welogin_login');
 	Route::any('code','WeloginController@code');
 });
 
-Route::prefix('file')->group(function () {
+Route::prefix('file')->namespace('wechat')->group(function () {
     Route::any('index','FileController@index');
     Route::any('fileup','FileController@fileup');
+    Route::any('get_access_token','FileController@get_access_token');
+});
+
+/**
+ *微信标签
+ */
+Route::prefix('wetag')->namespace('wechat')->group(function () {
+    Route::get('tag_index','WetagController@tag_index');//标签列表
+    Route::any('add_tag','WetagController@add_tag');//添加标签
+    Route::any('do_add_tag','WetagController@do_add_tag');//处理添加标签
+    Route::any('del_tag/{id}','WetagController@del_tag');//处理添加标签
+    Route::any('update_tag','WetagController@update_tag');//处理添加标签
+    Route::any('doupdate_tag','WetagController@doupdate_tag');//处理修改标签
+    Route::any('fans_list','WetagController@fans_list');//粉丝列表
+    Route::any('fans_tag','WetagController@fans_tag');//标签下的粉丝列表
 
 });
+Route::prefix('message')->namespace('wechat')->group(function () {
+    Route::any('send_massage','MessageController@send_massage');//添加标签
+});
+//2019/9/16周一测试
+//Route::any('weektest/login','weektestController@login');//登录
+Route::prefix('weektest')->namespace('wechat')->group(function () {
+    Route::any('login','weektestController@login');//登录
+    Route::any('dologin','weektestController@dologin');//处理登录
+    Route::any('code','weektestController@code');//获取code
+    Route::any('list','weektestController@list');//粉丝页
+    Route::any('out','weektestController@out');//退出
+    Route::any('message','weektestController@message');//消息群发
+
+});
+
+/**
+ * 生成带有参数的二维码
+ */
+Route::prefix('qrcode')->namespace('wechat')->group(function () {
+    Route::any('list','qrcodeController@list');//列表
+});
+/**
+ * 微信菜单
+ */
+Route::prefix('menu')->namespace('wechat')->group(function () {
+    Route::any('createmenu','menuController@createmenu');//生成菜单
+});
+/**
+ * 微信签名
+ */
+Route::prefix('sign')->namespace('wechat')->group(function () {
+    Route::any('location','signController@location');//生成菜单
+});
+
+/**
+ * 2019.9.21 登录 创建标签 添加标签 给粉丝打标签 查看标签下的粉丝 群发消息 定时发送
+ */
+Route::prefix('exam')->namespace('wechat')->group(function () {
+    Route::any('login','examController@login');//授权登录
+    Route::any('dologin','examController@dologin');//授权登录
+    Route::any('code','examController@code');//处理code
+    Route::any('taglist','examController@taglist');//标签列表
+    Route::any('createtag','examController@createtag');//添加标签
+    Route::any('dotag','examController@dotag');//处理添加标签
+    Route::any('fanslist/{id}','examController@fanslist');//粉丝列表
+    Route::any('maketag','examController@maketag');//给粉丝打标签
+    Route::any('tagfans/{id}','examController@tagfans');//改标签下的粉丝列表
+    Route::any('sendnews','examController@sendnews');//群发消息
+
+});
+
+

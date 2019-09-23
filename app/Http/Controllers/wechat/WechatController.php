@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Wechat;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class WechatController extends Controller
-{	
+{
 
 	public function get_user_index()
 	{
@@ -13,7 +14,7 @@ class WechatController extends Controller
    		 $result = file_get_contents('https://api.weixin.qq.com/cgi-bin/user/get?access_token='.$this->get_wechat_access_token().'&next_openid=');
     	//转换
     	$res=json_decode($result,1);
-    	// dd($res);
+//    	 dd($res);
     	//定义一个空数组
     	$info=[];
     	//循环
@@ -36,14 +37,14 @@ class WechatController extends Controller
 
 	//调用方法
     public function get_access_token()
-    {	
+    {
     	 return $this->get_wechat_access_token();
     }
 
     //获取 微信 access_token
     public function get_wechat_access_token()
-    {	
-    	//调用redis	
+    {
+    	//调用redis
     	$redis = new \Redis();
         $redis->connect('127.0.0.1','6379');
 
@@ -62,12 +63,12 @@ class WechatController extends Controller
         	$redis->set($access_token_key,$res['access_token'],$res['expires_in']);
         	return $res['access_token'];
         }
-  	
+
     }
 
     public function lists()
     {
-    	
+
     }
 
 

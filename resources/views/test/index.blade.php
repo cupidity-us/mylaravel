@@ -38,7 +38,7 @@
 				<div class="conShow">
 					<table border="1" cellspacing="0" cellpadding="0">
 						<tr>
-							
+
 							<td width="435px" class="tdColor">网站名称</td>
 							<td width="400px" class="tdColor">网站网址</td>
 							<td width="500px" class="tdColor">网站图片</td>
@@ -50,7 +50,7 @@
 						</tr>
 						@foreach ($data as $v)
 						<tr height="40px">
-							
+
 							<td>{{$v->t_name}}</td>
 							<td>{{$v->t_url}}</td>
 							<td><img src="http://www.larlogo.com/{{$v->t_logo}}" width="50"></td>
@@ -103,13 +103,13 @@ $(".no").click(function(){
   $(".banDel").hide();
 });
 $(".cfD").click(function(){
-  
+
 });
 
 $('.ok').click(function(){
 	var _this=$(this);
 	var t_id=_this.attr('t_id');
-	
+
 	$.ajax({
       url: "{{url('test/destroy')}}",
       method: 'post',
@@ -119,12 +119,14 @@ $('.ok').click(function(){
       success: function(res){
         if (res.code==1) {
             _this.parents('tr').remove();
-          };    
+          };
       }
     });
-    
-   
-  });  
+
+
+  });
 // 广告弹出框 end
 </script>
+
+
 </html>

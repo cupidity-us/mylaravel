@@ -1,10 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\wechat;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use DB;
 
+/**授权登录
+ * Class WeloginController
+ * @package App\Http\Controllers
+ */
 class WeloginController extends Controller
 {
     public function login()
@@ -23,7 +28,7 @@ class WeloginController extends Controller
     public function code()
     {
     	$res=request()->all();
-    	// dd($res);
+    	dd($res);
     	$result = file_get_contents('https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WECHAT_APPID').'&secret='.env('WECHAT_APPSECRET').'&code='.$res['code'].'&grant_type=authorization_code');
     	$re = json_decode($result,1);
     	$user_info = file_get_contents('https://api.weixin.qq.com/sns/userinfo?access_token='.$re['access_token'].'&openid='.env('WECHAT_APPID').'&lang=zh_CN');
