@@ -24,6 +24,8 @@ class LessonController extends Controller
      */
     public function backinfo()
     {
+        echo $_GET['echostr'];
+        die;
         //把数据存在logs里
         $xml_string = file_get_contents('php://input');//是个可以访问请求的原始数据的只读流
         dd($xml_string);
