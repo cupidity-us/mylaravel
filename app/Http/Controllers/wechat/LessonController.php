@@ -24,26 +24,76 @@ class LessonController extends Controller
      */
     public function backinfo()
     {
-        echo $_GET['echostr'];
-        die;
-        //把数据存在logs里
-        $xml_string = file_get_contents('php://input');//是个可以访问请求的原始数据的只读流
-        dd($xml_string);
-        // storage_path路径定位在跟目录下的storage下
-        $wechat_log_path=storage_path('logs/wechat/').date('Y-m-d').'.log';
-        //file_put_contents('写入文件的路径','文件内容','FILE_APPEND 意思不覆盖上次的文件 在文件末尾追加内容') 将内容写入文件中
-        file_put_contents($wechat_log_path,"--------------------------\n",FILE_APPEND);
-        //把请求微信返回回来的数据存入日志
+//        echo $_GET['echostr'];
+//        die;
+
+//        $xml_string = file_get_contents('php://input'); // 获取微信发过来的xml数据
+//        $wechat_log_path = storage_path('/logs/wechat/'.date("Y-m-d").'.log');  // 生成日志文件
+//        file_put_contents($wechat_log_path,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n",FILE_APPEND);
+//        file_put_contents($wechat_log_path,$xml_string,FILE_APPEND);
+//        file_put_contents($wechat_log_path,"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n",FILE_APPEND);
+////        dd($xml_string);
+//        $xml_obj = simplexml_load_string($xml_string,'SimpleXMLElement',LIBXML_NOCDATA);
+//        $xml_arr = (array)$xml_obj;
+//        \Log::Info(json_encode($xml_arr,JSON_UNESCAPED_UNICODE));
+////        echo $_GET['echostr'];
+//        // 业务逻辑（防止刷业务）
+//        if ($xml_arr['MsgType'] == 'event') {
+//            if ($xml_arr['Event'] == 'subscribe') {
+//                $share_code = explode('_',$xml_arr['EventKey'])[1];
+//                $user_openid = $xml_arr['FromUserName']; // 粉丝的openid
+//                // 判断是否已经在日志里
+//                $wechat_openid = DB::table('wechat_openid')->where('openid',$user_openid)->first();
+//                if (empty($wechat_openid)) {
+//                    DB::table('users')->where('id',$share_code)->increment('share_num',1);
+//                    DB::table('wechat_openid')->insert([
+//                        'openid' => $user_openid,
+//                        'add_time' => time()
+//                    ]);
+//                }
+//            }
+//        }
+//        echo $_GET['echostr'];
+
+
+
+
+        $xml_string = file_get_contents('php://input'); // 获取微信发过来的xml数据
+        $wechat_log_path = storage_path('/logs/wechat/'.date("Y-m-d").'.log');  // 生成日志文件
+        file_put_contents($wechat_log_path,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n",FILE_APPEND);
         file_put_contents($wechat_log_path,$xml_string,FILE_APPEND);
-        file_put_contents($wechat_log_path,"\n--------------------------\n\n",FILE_APPEND);
-        //把微信返回回来的数据转换为能看懂的对象类型
-        $xml_obj=simplexml_load_string($xml_string,'SimpleXMLElement',LIBXML_NOCDATA);
-        //再强制转换为数组类型
-        $xml_arr=(array)$xml_obj;
-//        dd($xml_arr['EventKey']);
-        //把日志写入laravel框架
+        file_put_contents($wechat_log_path,"\n<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n\n",FILE_APPEND);
+//        dd($xml_string);
+        $xml_obj = simplexml_load_string($xml_string,'SimpleXMLElement',LIBXML_NOCDATA);
+        $xml_arr = (array)$xml_obj;
         \Log::Info(json_encode($xml_arr,JSON_UNESCAPED_UNICODE));
 //        echo $_GET['echostr'];
+        // 业务逻辑（防止刷业务）
+        if ($xml_arr['MsgType'] == 'event') {
+            if ($xml_arr['Event'] == 'subscribe') {
+                $share_code = explode('_',$xml_arr['EventKey'])[1];
+                $user_openid = $xml_arr['FromUserName']; // 粉丝的openid
+                // 判断是否已经在日志里
+                $wechat_openid = DB::table('wechat_openid')->where('openid',$user_openid)->first();
+                if (empty($wechat_openid)) {
+                    DB::table('users')->where('id',$share_code)->increment('share_num',1);
+                    DB::table('wechat_openid')->insert([
+                        'openid' => $user_openid,
+                        'add_time' => time()
+                    ]);
+                }
+            }
+        }
+
+
+        dd(12345);
+
+
+
+
+
+
+
         //判断第一次关注被动回复消息
         if($xml_arr['MsgType']=="event"){
             if($xml_arr['Event']=="subscribe"){
