@@ -92,15 +92,15 @@ class LessonController extends Controller
             $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_wechat_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
             $user_re = file_get_contents($url);
             $user_info = json_decode($user_re,1);
-            //存入数据库
-//            $db_user = DB::table("wechat_openid")->where(['openid'=>$xml_arr['FromUserName']])->first();
-//            if(empty($db_user)){
-//                //没有数据，存入
-//                DB::table("wechat_openid")->insert([
-//                    'openid'=>$xml_arr['FromUserName'],
-//                    'add_time'=>time()
-//                ]);
-//            }
+            // 存入数据库
+            $db_user = DB::table("wechat_openid")->where(['openid'=>$xml_arr['FromUserName']])->first();
+            if(empty($db_user)){
+                //没有数据，存入
+                DB::table("wechat_openid")->insert([
+                    'openid'=>$xml_arr['FromUserName'],
+                    'add_time'=>time()
+                ]);
+            }
             $message = '欢迎'.$user_info['nickname'].'，感谢您的关注!';
             $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
             echo $xml_str;
@@ -112,38 +112,38 @@ class LessonController extends Controller
 
 
 
-        //判断第一次关注被动回复消息
-        if($xml_arr['MsgType']=="event"){
-            if($xml_arr['Event']=="subscribe"){
-                $user_info=file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->tools->get_wechat_access_token()."&openid=".$xml_arr['FromUserName']."&lang=zh_CN");
-                $user=json_decode($user_info,1);
-                $message='欢迎关注！'.$user['nickname'];
-                $xml_str='<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-                echo $xml_str;
-            }
-        }
+//        //判断第一次关注被动回复消息
+//        if($xml_arr['MsgType']=="event"){
+//            if($xml_arr['Event']=="subscribe"){
+//                $user_info=file_get_contents("https://api.weixin.qq.com/cgi-bin/user/info?access_token=".$this->tools->get_wechat_access_token()."&openid=".$xml_arr['FromUserName']."&lang=zh_CN");
+//                $user=json_decode($user_info,1);
+//                $message='欢迎关注！'.$user['nickname'];
+//                $xml_str='<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+//                echo $xml_str;
+//            }
+//        }
         //业务逻辑
-        if($xml_arr['MsgType']=='event'){
-            if($xml_arr['Event']=='subscribe'){
-                $share_code=explode('_',$xml_arr['EventKey'])[1];
-                $user_openid=$xml_arr['FromUserName'];//粉丝openid
-                //判断是否已经关注过
-                $wechat_openid=DB::table('user')->where(['u_id'=>$user_openid])->first();
-                if(empty($wechat_openid)){
-                    DB::table('user')->where(['u_id'=>$share_code])->increment('share_num',1);
-                    DB::table('wechat_user')->insert([
-                        'openid'=>$user_openid,
-                    ]);
-                }
-            }else{
-                $xml_str='<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[欢迎回来❥(^_-)]]></Content></xml>';
-                echo $xml_str;
-            }
-        }
-        //判断第一次关注被动回复消息
-        $message='欢迎关注 撒拉嘿呦！';
-        $xml_str='<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
-        echo $xml_str;
+//        if($xml_arr['MsgType']=='event'){
+//            if($xml_arr['Event']=='subscribe'){
+//                $share_code=explode('_',$xml_arr['EventKey'])[1];
+//                $user_openid=$xml_arr['FromUserName'];//粉丝openid
+//                //判断是否已经关注过
+//                $wechat_openid=DB::table('user')->where(['u_id'=>$user_openid])->first();
+//                if(empty($wechat_openid)){
+//                    DB::table('user')->where(['u_id'=>$share_code])->increment('share_num',1);
+//                    DB::table('wechat_user')->insert([
+//                        'openid'=>$user_openid,
+//                    ]);
+//                }
+//            }else{
+//                $xml_str='<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[欢迎回来❥(^_-)]]></Content></xml>';
+//                echo $xml_str;
+//            }
+//        }
+//        //判断第一次关注被动回复消息
+//        $message='欢迎关注 撒拉嘿呦！';
+//        $xml_str='<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+//        echo $xml_str;
     }
 
 }
