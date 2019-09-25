@@ -326,4 +326,11 @@ Route::prefix('exam')->namespace('wechat')->group(function () {
 
 });
 
+/**
+ * 2.19.9.24 消息回复 生成菜单 授权登录
+ */
+Route::prefix('lesson')->namespace('wechat')->group(function () {
+    Route::any('backinfo','lessonController@backinfo');//关注回复
+});
+
 
