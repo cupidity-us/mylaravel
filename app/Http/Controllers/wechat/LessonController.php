@@ -26,7 +26,7 @@ class LessonController extends Controller
     {
         //把数据存在logs里
         $xml_string = file_get_contents('php://input');//是个可以访问请求的原始数据的只读流
-//        dd($xml_string);
+        dd($xml_string);
         // storage_path路径定位在跟目录下的storage下
         $wechat_log_path=storage_path('logs/wechat/').date('Y-m-d').'.log';
         //file_put_contents('写入文件的路径','文件内容','FILE_APPEND 意思不覆盖上次的文件 在文件末尾追加内容') 将内容写入文件中
