@@ -333,4 +333,14 @@ Route::prefix('exam')->namespace('wechat')->group(function () {
 //    Route::any('backinfo','lessonController@backinfo');//关注回复
 //});
 
+/**code
+ * 2019.9.26选课
+ */
+Route::prefix('choose')->namespace('wechat')->group(function () {
+    Route::any('createmenu','ChooseController@createmenu');//生成新菜单
+    Route::any('welogin_login','ChooseController@welogin_login');//授权登录
+    Route::any('code','ChooseController@code');//授权登录
+    Route::any('createlesson','ChooseController@createlesson');//添加课程
 
+
+});
