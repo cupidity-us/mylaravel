@@ -94,6 +94,7 @@ class LessonController extends Controller
             $user_re = file_get_contents($url);
             $user_info = json_decode($user_re,1);
             // 存入数据库
+
             $db_user = DB::table("wechat_openid")->where(['openid'=>$xml_arr['FromUserName']])->first();
             if(empty($db_user)){
                 //没有数据，存入
@@ -102,10 +103,21 @@ class LessonController extends Controller
                     'add_time'=>time()
                 ]);
             }
-            $message = '欢迎'.$user_info['nickname'].'，感谢您的关注!';
+            $time=time();
+            $message = '你好'.$user_info['nickname'].',当前时间为'.date('Y-m-d H:i:s',$time);
             $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
             echo $xml_str;
+        }else{
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_wechat_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
+            $user_re = file_get_contents($url);
+            $user_info = json_decode($user_re,1);
+            $show_time=time();
+            $message = '欢迎回来'.$user_info['nickname'].',当前时间为'.date('Y-m-d H:i:s',$show_time);
+            $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
+            echo $xml_str;
+
         }
+
 
 
 
