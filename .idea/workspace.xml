@@ -4,7 +4,6 @@
     <list default="true" id="10923f0d-5762-4a71-9322-0af2504ee91d" name="默认更改列表" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/wechat/LessonController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/wechat/LessonController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/wechat/MessageController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/wechat/MessageController.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -185,7 +184,7 @@
       <workItem from="1569409583568" duration="6649000" />
       <workItem from="1569459335375" duration="15895000" />
       <workItem from="1569631426548" duration="5291000" />
-      <workItem from="1569637195695" duration="797000" />
+      <workItem from="1569637195695" duration="1404000" />
     </task>
     <servers />
   </component>

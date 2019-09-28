@@ -107,7 +107,7 @@ class LessonController extends Controller
             $xml_str = '<xml><ToUserName><![CDATA['.$xml_arr['FromUserName'].']]></ToUserName><FromUserName><![CDATA['.$xml_arr['ToUserName'].']]></FromUserName><CreateTime>'.time().'</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA['.$message.']]></Content></xml>';
             echo $xml_str;
         }else{
-            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_wechat_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
+            $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=25_HiShgSlE7WsSjjgjcdyL2wFmkkOZDz0VQMxuSrYXzPbce9_EO5ePIiYbTJ05QFVQGGAXdsi_MdIssMoKtYQ0MG9UoGSkD_oFrH88ZufbSWwiQ1bEqHbIE53CZS49p6TGmPG5DfMZNxFxsCl1IMMaAIARVV&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
             $user_re = file_get_contents($url);
             $user_info = json_decode($user_re,1);
             $show_time=time();
