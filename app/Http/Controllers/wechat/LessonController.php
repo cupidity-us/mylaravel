@@ -94,19 +94,15 @@ class LessonController extends Controller
             $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->tools->get_wechat_access_token().'&openid='.$xml_arr['FromUserName'].'&lang=zh_CN';
             $user_re = file_get_contents($url);
             $user_info = json_decode($user_re,1);
-            // 查询数据库
+            // 存入数据库
 
-            $db_user = DB::table("user_weixin")->where(['openid'=>$xml_arr['FromUserName']])->first();
+            $db_user = DB::table("wechat_openid")->where(['openid'=>$xml_arr['FromUserName']])->first();
             if(empty($db_user)){
                 //没有数据，存入
-                DB::table("user_weixin")->insert([
-
+                DB::table("wechat_openid")->insert([
                     'openid'=>$xml_arr['FromUserName'],
-                    'ctiy'=>$user_info['city'],
-                    'sex'=>$user_info['sex'],
                     'add_time'=>time()
                 ]);
-
             }
             $time=time();
             $message = '你好'.$user_info['nickname'].',当前时间为'.date('Y-m-d H:i:s',$time);
