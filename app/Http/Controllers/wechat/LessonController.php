@@ -94,10 +94,12 @@ class LessonController extends Controller
             $user_re = file_get_contents($url);
             $user_info = json_decode($user_re,1);
             // 存入数据库
-            $db_user = DB::table("wechat_openid")->where(['openid'=>$xml_arr['FromUserName']])->first();
+            $db_user = DB::table("wechat_weixin")->where(['openid'=>$xml_arr['FromUserName']])->first();
             if(empty($db_user)){
                 //没有数据，存入
-                DB::table("wechat_openid")->insert([
+                DB::table("wechat_weixin")->insert([
+                    'city'=>$user_info['city'],
+                    'sex'=>$user_info['sex'],
                     'openid'=>$xml_arr['FromUserName'],
                     'add_time'=>time()
                 ]);
