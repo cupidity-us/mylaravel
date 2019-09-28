@@ -21,6 +21,7 @@ class MessageController extends Controller
     public function send_massage()
     {
         $url='https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='.$this->tools->get_wechat_access_token();
+        dd($url);
         $openid='o7l9-xAeW7okSjG8DHjNztiFeCms';
         $num=rand(11111,99999);
         $data=[
